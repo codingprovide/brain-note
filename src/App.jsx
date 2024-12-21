@@ -1,4 +1,6 @@
 import React, { useCallback } from "react";
+import PaintToolsBar from "./components/PaintToolsBar";
+
 import {
   ReactFlow,
   MiniMap,
@@ -35,6 +37,7 @@ export default function App() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
       >
+        <PaintToolsBar />
         <Controls />
         <MiniMap />
         <Background variant="dots" gap={12} size={1} />
