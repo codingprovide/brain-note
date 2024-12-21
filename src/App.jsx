@@ -37,11 +37,12 @@ export default function App() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
       >
-        <PaintToolsBar />
         <Controls />
         <MiniMap />
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
+
+      <PaintToolsBar />
     </div>
   );
 }
