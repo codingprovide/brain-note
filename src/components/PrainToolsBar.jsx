@@ -71,13 +71,25 @@ export default function PaintToolsBar() {
               <div className="flex">
                 <ul className="text-sm text-gray-700 dark:text-gray-200 w-1/2">
                   <li className="flex items-center py-2 px-5 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 ">
-                    <div className="w-5 h-5 rounded-full cursor-pointer bg-black" />
+                    <div
+                      className={`w-5 h-5 rounded-full cursor-pointer ${
+                        activeTool === "pencil" ? "bg-black" : "bg-yellow-500"
+                      }`}
+                    />
                   </li>
                   <li className="flex items-center py-2 px-5 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 ">
-                    <div className="w-5 h-5 rounded-full cursor-pointer bg-red-500" />
+                    <div
+                      className={`w-5 h-5 rounded-full cursor-pointer ${
+                        activeTool === "pencil" ? "bg-red-500" : "bg-blue-500"
+                      }`}
+                    />
                   </li>
                   <li className="flex items-center py-2 px-5 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 ">
-                    <div className="w-5 h-5 rounded-full cursor-pointer bg-blue-500" />
+                    <div
+                      className={`w-5 h-5 rounded-full cursor-pointer ${
+                        activeTool === "pencil" ? "bg-blue-500" : "bg-green-500"
+                      }`}
+                    />
                   </li>
                 </ul>
                 <ul className="text-sm text-gray-700 dark:text-gray-200 w-1/2">
