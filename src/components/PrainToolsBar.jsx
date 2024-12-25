@@ -7,15 +7,15 @@ export default function PaintToolsBar() {
   const [isToolbarOpen, setIsToolbarOpen] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeTool, setActiveTool] = useState("pencil");
-  const buttonRef = useRef(null);
+  const [pencilColor, setPencilColor] = useState("black");
+  const [highlightColor, setHighlightColor] = useState("yellow");
+  const [selectedThickness, setSelectedThickness] = useState("2px");
   const dropdownRef = useRef(null);
 
   const handleToolClick = (tool) => {
     setActiveTool(tool);
-    console.log("Tool:", activeTool);
     if (tool === "pencil" || tool === "highlighter") {
       setIsDropdownOpen(true);
-      console.log("Dropdown open");
     } else {
       setIsDropdownOpen(false);
     }
@@ -26,12 +26,40 @@ export default function PaintToolsBar() {
       setIsDropdownOpen(false);
     }
   };
+
+  useEffect(() => {
+    console.log("activeTool", activeTool);
+    console.log("pencilColor", pencilColor);
+    console.log("highlightColor", highlightColor);
+    console.log("Thickness", selectedThickness);
+  }, [pencilColor, highlightColor, selectedThickness]);
+
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  const handleColorSelect = (color) => {
+    if (color === "black") {
+      activeTool === "highlighter"
+        ? setHighlightColor("yellow")
+        : setPencilColor(color);
+    } else if (color === "red") {
+      activeTool === "highlighter"
+        ? setHighlightColor("blue")
+        : setPencilColor(color);
+    } else if (color === "blue") {
+      activeTool === "highlighter"
+        ? setHighlightColor("green")
+        : setPencilColor(color);
+    }
+  };
+
+  const handleThicknessSelect = (thickness) => {
+    setSelectedThickness(thickness);
+  };
 
   return (
     <div ref={dropdownRef}>
@@ -40,7 +68,6 @@ export default function PaintToolsBar() {
           <div className="grid h-full max-w-lg grid-cols-3 mx-auto">
             <button
               onClick={() => handleToolClick("pencil")}
-              ref={buttonRef}
               className={`inline-flex flex-col items-center justify-center px-5 rounded-s-full hover:bg-gray-50 active:bg-gray-50 focus:bg-gray-50 dark:hover:bg-gray-800 group focus:outline-none ${
                 activeTool === "pencil" ? "text-blue-600" : "text-[#CBCBCB]"
               }`}
@@ -70,36 +97,78 @@ export default function PaintToolsBar() {
             <div className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-32 dark:bg-gray-700 dark:divide-gray-600 mt-2">
               <div className="flex">
                 <ul className="text-sm text-gray-700 dark:text-gray-200 w-1/2">
-                  <li className="flex items-center py-2 px-5 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 ">
+                  <li
+                    onClick={() => handleColorSelect("black")}
+                    className="flex items-center py-2 px-5 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 "
+                  >
                     <div
-                      className={`w-5 h-5 rounded-full cursor-pointer ${
+                      className={`w-5 h-5 rounded-full cursor-pointer shadow-md ${
                         activeTool === "pencil" ? "bg-black" : "bg-yellow-500"
+                      } ${
+                        (activeTool === "pencil" && pencilColor === "black") ||
+                        (activeTool === "highlighter" &&
+                          highlightColor === "yellow")
+                          ? "border-2 border-gray-400 "
+                          : ""
                       }`}
                     />
                   </li>
-                  <li className="flex items-center py-2 px-5 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 ">
+                  <li
+                    onClick={() => handleColorSelect("red")}
+                    className="flex items-center py-2 px-5 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 "
+                  >
                     <div
-                      className={`w-5 h-5 rounded-full cursor-pointer ${
+                      className={`w-5 h-5 rounded-full cursor-pointer shadow-md ${
                         activeTool === "pencil" ? "bg-red-500" : "bg-blue-500"
+                      } ${
+                        (activeTool === "pencil" && pencilColor === "red") ||
+                        (activeTool === "highlighter" &&
+                          highlightColor === "blue")
+                          ? "border-2 border-gray-400 "
+                          : ""
                       }`}
                     />
                   </li>
-                  <li className="flex items-center py-2 px-5 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 ">
+                  <li
+                    onClick={() => handleColorSelect("blue")}
+                    className="flex items-center py-2 px-5 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 "
+                  >
                     <div
-                      className={`w-5 h-5 rounded-full cursor-pointer ${
+                      className={`w-5 h-5 rounded-full cursor-pointer shadow-md ${
                         activeTool === "pencil" ? "bg-blue-500" : "bg-green-500"
+                      } ${
+                        (activeTool === "pencil" && pencilColor === "blue") ||
+                        (activeTool === "highlighter" &&
+                          highlightColor === "green")
+                          ? "border-2 border-gray-400 "
+                          : ""
                       }`}
                     />
                   </li>
                 </ul>
                 <ul className="text-sm text-gray-700 dark:text-gray-200 w-1/2">
-                  <li className="flex items-center py-[17px] px-4 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <div className="h-[2px] w-20 cursor-pointer bg-black rounded-md " />
+                  <li
+                    onClick={() => handleThicknessSelect("2px")}
+                    className={`flex items-center py-[17px] px-4 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600  ${
+                      selectedThickness === "2px" ? "bg-gray-200" : ""
+                    }`}
+                  >
+                    <div className="h-[2px] w-20 cursor-pointer bg-black rounded-md" />
                   </li>
-                  <li className="flex items-center py-[16px] px-4 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
+                  <li
+                    onClick={() => handleThicknessSelect("5px")}
+                    className={`flex items-center py-[16px] px-4 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600  ${
+                      selectedThickness === "5px" ? "bg-gray-200" : ""
+                    }`}
+                  >
                     <div className="h-[4px] w-20 cursor-pointer bg-black rounded-md" />
                   </li>
-                  <li className="flex items-center py-[15px] px-4 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
+                  <li
+                    onClick={() => handleThicknessSelect("10px")}
+                    className={`flex items-center py-[15px] px-4 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600  ${
+                      selectedThickness === "10px" ? "bg-gray-200" : ""
+                    }`}
+                  >
                     <div className="h-[6px] w-20 cursor-pointer bg-black rounded-md" />
                   </li>
                 </ul>
