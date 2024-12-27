@@ -34,6 +34,9 @@ export default function Flow() {
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
+
+  const proOptions = { hideAttribution: true };
+
   //當滑鼠連續點擊兩次新增節點
   const addNode = useCallback(
     (event) => {
@@ -82,6 +85,7 @@ export default function Flow() {
       onPaneClick={addNode}
       //停用雙擊畫布進行縮放的功能
       zoomOnDoubleClick={false}
+      proOptions={proOptions}
     >
       <Controls />
       <MiniMap />

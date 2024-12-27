@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { FaHighlighter } from "react-icons/fa";
 import { PiEraserFill } from "react-icons/pi";
