@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import Button from "./MainToolsBar/Button";
 import { FaPencilAlt } from "react-icons/fa";
 import { FaHighlighter } from "react-icons/fa";
 import { PiEraserFill } from "react-icons/pi";
@@ -15,7 +16,7 @@ export default function PaintToolsBar({
   const [activeTool, setActiveTool] = useState("pencil");
   const [pencilColor, setPencilColor] = useState("black");
   const [highlightColor, setHighlightColor] = useState("yellow");
-  const [selectedThickness, setSelectedThickness] = useState("2px");
+  const [selectedThickness, setSelectedThickness] = useState("3px");
   const dropdownRef = useRef(null);
 
   const containerstyle = "grid max-w-lg grid-cols-3 mx-auto";
@@ -24,7 +25,7 @@ export default function PaintToolsBar({
   const dropdownstyle =
     "flex items-center justify-around h-10 rounded-md cursor-pointer hover:bg-gray-100";
   const colorcirclestyle = "w-5 h-5 rounded-full cursor-pointer shadow-md";
-  const thicknessstyle = "w-20 cursor-pointer bg-black rounded-md";
+  const thicknessstyle = "px-4 w-2 cursor-pointer bg-black rounded-md";
 
   useEffect(() => {
     setIsToolbarOpen(isShow);
@@ -166,7 +167,7 @@ export default function PaintToolsBar({
                       selectedThickness === "2px" ? "bg-gray-100" : ""
                     }`}
                   >
-                    <div className={`h-[2px] ${thicknessstyle}`} />
+                    <div className={`h-[3px] ${thicknessstyle}`} />
                   </div>
                   <div
                     onClick={() => handleThicknessSelect("5px")}
@@ -174,15 +175,15 @@ export default function PaintToolsBar({
                       selectedThickness === "5px" ? "bg-gray-100" : ""
                     }`}
                   >
-                    <div className={`h-[4px] ${thicknessstyle}`} />
+                    <div className={`h-[5px] ${thicknessstyle}`} />
                   </div>
                   <div
                     onClick={() => handleThicknessSelect("10px")}
-                    className={`px-4 ${dropdownstyle} ${
-                      selectedThickness === "10px" ? "bg-gray-100" : ""
+                    className={`flex items-center justify-around h-10 rounded-md cursor-pointer hover:bg-gray-100 ${
+                      selectedThickness === "7px" ? "bg-gray-100" : ""
                     }`}
                   >
-                    <div className={`h-[6px] ${thicknessstyle}`} />
+                    <div className={`h-[7px] ${thicknessstyle}`} />
                   </div>
                 </div>
               )}
