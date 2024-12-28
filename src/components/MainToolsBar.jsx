@@ -1,10 +1,11 @@
-import { useState } from "react";
+import MainToolsBarLayout from "./MainToolsBar/MainToolsBarLayout";
+import Button from "./MainToolsBar/Button";
 import PaintToolsBar from "./PaintToolsBar";
+import { useState } from "react";
 import { BsCursor, BsSquare } from "react-icons/bs";
 import { FaPencilAlt } from "react-icons/fa";
 import { RxText } from "react-icons/rx";
-import MainToolsBarLayout from "./MainToolsBar/MainToolsBarLayout";
-import Button from "./MainToolsBar/Button";
+
 
 export default function MainToolsBar() {
   const [activeTool, setActiveTool] = useState("cursor");
@@ -62,6 +63,7 @@ export default function MainToolsBar() {
           <Button
             key={mainTool.tool}
             handleToolClick={handleToolClick}
+            buttonstyle={buttonstyle}
             tool={mainTool.tool}
             icon={mainTool.icon}
             roundedStyle={mainTool.roundedStyle}
