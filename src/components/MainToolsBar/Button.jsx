@@ -2,10 +2,10 @@ import clsx from "clsx";
 
 export default function Button({
   handleToolClick,
+  roundedStyle,
   buttonstyle,
   tool,
   icon,
-  roundedStyle,
   activeTool,
 }) {
   return (

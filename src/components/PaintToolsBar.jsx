@@ -87,7 +87,6 @@ export default function PaintToolsBar({
     if (tool === "pencil" || tool === "highlighter") {
       setIsDropdownOpen(true);
       tool === "pencil" ? setIsThicknessOpen(true) : setIsThicknessOpen(false);
-      activeTool === "pencil" ? console.log("false") : console.log("true");
     } else {
       setIsDropdownOpen(false);
     }
@@ -123,19 +122,19 @@ export default function PaintToolsBar({
     <div ref={dropdownRef}>
       {isToolbarOpen && (
         <div className={`top-5 ${toolsbarstyle}`}>
-            <MainToolsBarLayout containerstyle={containerstyle} col="grid-cols-3">
-                    {paintTools.map((paintTool) => (
-                      <Button
-                        key={paintTool.tool}
-                        handleToolClick={handleToolClick}
-                        buttonstyle={buttonstyle}
-                        tool={paintTool.tool}
-                        icon={paintTool.icon}
-                        roundedStyle={paintTool.roundedStyle}
-                        activeTool={activeTool}
-                      />
-                    ))}
-                  </MainToolsBarLayout>
+          <MainToolsBarLayout containerstyle={containerstyle} col="grid-cols-3">
+            {paintTools.map((paintTool) => (
+              <Button
+                key={paintTool.tool}
+                handleToolClick={handleToolClick}
+                roundedStyle={paintTool.roundedStyle}
+                buttonstyle={buttonstyle}
+                tool={paintTool.tool}
+                icon={paintTool.icon}
+                activeTool={activeTool}
+              />
+          ))}
+          </MainToolsBarLayout>
           
           {isDropdownOpen && (
             <div>
@@ -170,6 +169,8 @@ export default function PaintToolsBar({
                   ))}
                 </ThicknessLayout>
               )}
+
+
             </div>
           )}
         </div>

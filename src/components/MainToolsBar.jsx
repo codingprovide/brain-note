@@ -22,6 +22,7 @@ export default function MainToolsBar() {
     setActiveTool(tool);
     tool === "pencil" ? setIsShow(true) : setIsShow(false);
   };
+
   const mainTools = [
     {
       tool: "cursor",
@@ -67,10 +68,10 @@ export default function MainToolsBar() {
               <Button
                 key={mainTool.tool}
                 handleToolClick={handleToolClick}
+                roundedStyle={mainTool.roundedStyle}
                 buttonstyle={buttonstyle}
                 tool={mainTool.tool}
                 icon={mainTool.icon}
-                roundedStyle={mainTool.roundedStyle}
                 activeTool={activeTool}
               />
           ))}
