@@ -8,13 +8,12 @@ export default function Button({width, handleThicknessSelect, dropdownstyle, sel
       className={clsx(
         dropdownstyle,
         {
-          "px-4": true,
           "bg-gray-100": selectedThickness === width,
           "": selectedThickness !== width
         }
       )}
     >
-      <div className={`h-[${width}] ${thicknessstyle}`} />
+      <div className={`${width} ${thicknessstyle}`} />
     </div>
   );
 }

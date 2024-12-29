@@ -73,9 +73,9 @@ export default function PaintToolsBar({
     },
   ];
   const thickness = [
-    {width: "3px"},
-    {width: "5px"},
-    {width: "7px"},
+    {width: "h-[3px]"},
+    {width: "h-[5px]"},
+    {width: "h-[7px]"},
   ]
 
   useEffect(() => {

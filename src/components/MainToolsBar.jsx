@@ -54,7 +54,7 @@ export default function MainToolsBar() {
   return (
     <>
       <PaintToolsBar
-        containerstyle={containerstyle}
+      containerstyle={containerstyle}
         toolsbarstyle={toolsbarstyle}
         buttonstyle={buttonstyle}
         iconstyle={iconstyle}
