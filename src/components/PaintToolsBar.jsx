@@ -1,6 +1,6 @@
 import MainToolsBarLayout from "./MainToolsBar/MainToolsBarLayout"
 import ThicknessLayout from "./DropDown/ThicknessLayout"
-import BrushColor from "./PaintToolsBar/BrushColor"
+import BrushColor from "./DropDown/BrushColor"
 import Thickness from "./DropDown/Thickness"
 import Button from "./MainToolsBar/Button";
 import { useState, useEffect, useRef } from "react";
