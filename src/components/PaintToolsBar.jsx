@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import PaintToolsBarLayout from "./PaintToolsBar/PaintToolsBarLayout"
 import Button from "./MainToolsBar/Button";
+import { useState, useEffect, useRef } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { FaHighlighter } from "react-icons/fa";
 import { PiEraserFill } from "react-icons/pi";
@@ -14,8 +15,8 @@ export default function PaintToolsBar({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isThicknessOpen, setIsThicknessOpen] = useState(true);
   const [activeTool, setActiveTool] = useState("pencil");
-  const [pencilColor, setPencilColor] = useState("black");
-  const [highlightColor, setHighlightColor] = useState("yellow");
+  const [pencilColor, setPencilColor] = useState("bg-black");
+  const [highlightColor, setHighlightColor] = useState("bg-yellow-500");
   const [selectedThickness, setSelectedThickness] = useState("3px");
   const dropdownRef = useRef(null);
 
@@ -26,6 +27,49 @@ export default function PaintToolsBar({
     "flex items-center justify-around h-10 rounded-md cursor-pointer hover:bg-gray-100";
   const colorcirclestyle = "w-5 h-5 rounded-full cursor-pointer shadow-md";
   const thicknessstyle = "px-4 w-2 cursor-pointer bg-black rounded-md";
+
+  const paintTools = [
+      {
+        tool: "pencil",
+        icon: (
+          <FaPencilAlt
+            className={`text-2xl transform scale-x-[-1] ${iconstyle}`}
+          />
+        ),
+        roundedStyle: "rounded-s-full",
+      },
+      {
+        tool: "highlighter",
+        icon: <FaHighlighter className={`text-2xl ${iconstyle}`} />,
+        roundedStyle: "",
+      },
+      {
+        tool: "earser",
+        icon: <PiEraserFill className={`text-3xl ${iconstyle}`} />,
+        roundedStyle: "rounded-e-full",
+      },
+    ];
+
+  const dropDown = [
+    {
+      col: "col1",
+      pencilColor: "bg-black",
+      highlighterColor: "bg-yellow-500",
+      style: "border-[3px] border-gray-500 ",
+    },
+    {
+      col: "col2",
+      pencilColor: "bg-red-500",
+      highlighterColor: "bg-blue-500",
+      style: "border-[3px] border-gray-500 ",
+    },
+    {
+      col: "col3",
+      pencilColor: "bg-blue-500",
+      highlighterColor: "bg-green-500",
+      style: "border-[3px] border-gray-500 ",
+    },
+  ];
 
   useEffect(() => {
     setIsToolbarOpen(isShow);
@@ -69,7 +113,7 @@ export default function PaintToolsBar({
         ? setHighlightColor("green")
         : setPencilColor(color);
     }
-  };
+  }
 
   const handleThicknessSelect = (thickness) => {
     setSelectedThickness(thickness);
@@ -79,33 +123,20 @@ export default function PaintToolsBar({
     <div ref={dropdownRef}>
       {isToolbarOpen && (
         <div className={`top-5 ${toolsbarstyle}`}>
-          <div className={`h-full ${containerstyle}`}>
-            <button
-              onClick={() => handleToolClick("pencil")}
-              className={`rounded-s-full ${buttonstyle} ${
-                activeTool === "pencil" ? "text-blue-600" : "text-gray-500"
-              }`}
-            >
-              <FaPencilAlt className={`text-2xl ${iconstyle}`} />
-            </button>
-            <button
-              onClick={() => handleToolClick("highlighter")}
-              className={`${buttonstyle} ${
-                activeTool === "highlighter" ? "text-blue-600" : "text-gray-500"
-              }`}
-            >
-              <FaHighlighter className={`text-2xl ${iconstyle}`} />
-            </button>
-            <button
-              onClick={() => handleToolClick("eraser")}
-              className={`rounded-e-full ${buttonstyle} ${
-                activeTool === "eraser" ? "text-blue-600" : "text-gray-500"
-              }`}
-            >
-              <PiEraserFill className={`text-3xl ${iconstyle}`} />
-            </button>
-          </div>
-
+            <PaintToolsBarLayout containerstyle={containerstyle}>
+                    {paintTools.map((paintTool) => (
+                      <Button
+                        key={paintTool.tool}
+                        handleToolClick={handleToolClick}
+                        buttonstyle={buttonstyle}
+                        tool={paintTool.tool}
+                        icon={paintTool.icon}
+                        roundedStyle={paintTool.roundedStyle}
+                        activeTool={activeTool}
+                      />
+                    ))}
+                  </PaintToolsBarLayout>
+          
           {isDropdownOpen && (
             <div>
               <div className={`${dropdowncontainerstyle} mt-2 rounded-t-lg`}>
@@ -159,12 +190,13 @@ export default function PaintToolsBar({
                 </div>
               </div>
 
+
               {isThicknessOpen && (
                 <div className={`${dropdowncontainerstyle} rounded-b-lg`}>
                   <div
-                    onClick={() => handleThicknessSelect("2px")}
+                    onClick={() => handleThicknessSelect("3px")}
                     className={`px-4 ${dropdownstyle} ${
-                      selectedThickness === "2px" ? "bg-gray-100" : ""
+                      selectedThickness === "3px" ? "bg-gray-100" : ""
                     }`}
                   >
                     <div className={`h-[3px] ${thicknessstyle}`} />
@@ -178,8 +210,8 @@ export default function PaintToolsBar({
                     <div className={`h-[5px] ${thicknessstyle}`} />
                   </div>
                   <div
-                    onClick={() => handleThicknessSelect("10px")}
-                    className={`flex items-center justify-around h-10 rounded-md cursor-pointer hover:bg-gray-100 ${
+                    onClick={() => handleThicknessSelect("7px")}
+                    className={`px-4 ${dropdownstyle} ${
                       selectedThickness === "7px" ? "bg-gray-100" : ""
                     }`}
                   >

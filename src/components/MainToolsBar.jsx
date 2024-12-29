@@ -1,6 +1,6 @@
 import MainToolsBarLayout from "./MainToolsBar/MainToolsBarLayout";
-import Button from "./MainToolsBar/Button";
 import PaintToolsBar from "./PaintToolsBar";
+import Button from "./MainToolsBar/Button";
 import { useState } from "react";
 import { BsCursor, BsSquare } from "react-icons/bs";
 import { FaPencilAlt } from "react-icons/fa";
