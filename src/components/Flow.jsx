@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo } from "react";
 import {
   ReactFlow,
   MiniMap,
@@ -12,15 +12,27 @@ import {
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
-//初始化節點
-const initialNodes = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
-  { id: "2", position: { x: 0, y: 100 }, data: { label: "2" } },
-];
-//初始化節點的邊
-const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
-
+import EditorNode from "./EditorNode";
 export default function Flow() {
+  const nodeTypes = useMemo(() => ({ editor: EditorNode }), []);
+  //初始化節點
+  const initialNodes = [
+    {
+      id: "1",
+      position: { x: 0, y: 0 },
+      type: "editor",
+      data: { label: "1" },
+    },
+    {
+      id: "2",
+      position: { x: 0, y: 100 },
+      data: { label: "2" },
+    },
+  ];
+
+  //初始化節點的邊
+  const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
+
   const proOptions = { hideAttribution: true };
 
   //使用screenToFlowPosition來轉換滑鼠點擊的座標
@@ -30,43 +42,32 @@ export default function Flow() {
   //使用useEdgesState來管理節點的邊
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   //初始化滑鼠雙擊的時間
-  const [clickTimeout, setClickTimeout] = useState(null);
   //節點的邊連結
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
+
   //當滑鼠連續點擊兩次新增節點
-  const addNode = useCallback(
-    (event) => {
-      if (clickTimeout) {
-        clearTimeout(clickTimeout);
-        setClickTimeout(null);
-        const { clientX, clientY } =
-          "changedTouches" in event ? event.changedTouches[0] : event;
+  const handleAddNode = (event) => {
+    if (event.target.classList[0] === "react-flow__pane") {
+      const { clientX, clientY } =
+        "changedTouches" in event ? event.changedTouches[0] : event;
 
-        const newNode = {
-          id: `${nodes.length + 1}`,
-          position: screenToFlowPosition({ x: clientX, y: clientY }),
-          data: { label: `Node ${nodes.length + 1}` },
-        };
+      const newNode = {
+        id: `${nodes.length + 1}`,
+        position: screenToFlowPosition({ x: clientX, y: clientY }),
+        type: "editor",
+      };
 
-        setNodes((nds) => [...nds, newNode]);
-        console.log("New node added!");
-      } else {
-        setClickTimeout(
-          setTimeout(() => {
-            setClickTimeout(null);
-          }, 300)
-        );
-        return;
-      }
-    },
-    [clickTimeout, nodes.length, screenToFlowPosition, setNodes]
-  );
+      setNodes((nds) => [...nds, newNode]);
+      console.log("New node added!");
+    }
+  };
 
   return (
     <ReactFlow
+      fitView
       nodes={nodes}
       edges={edges}
       onNodesChange={onNodesChange}
@@ -80,11 +81,15 @@ export default function Flow() {
       panOnDrag={[1, 2]}
       //設定部分位於選區內的節點也會被選取
       selectionMode={SelectionMode.Partial}
-      //當使用者點選畫布空白區域時，觸發addNode function，可用來新增節點
-      onPaneClick={addNode}
       //停用雙擊畫布進行縮放的功能
       zoomOnDoubleClick={false}
       proOptions={proOptions}
+      nodeTypes={nodeTypes}
+      //當使用者點選畫布空白區域時，觸發addNode function，可用來新增節點
+      onDoubleClick={(event) => {
+        handleAddNode(event);
+      }}
+      maxZoom={5}
     >
       <Controls />
       <MiniMap />
