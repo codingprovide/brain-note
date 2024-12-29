@@ -1,5 +1,6 @@
 import MainToolsBarLayout from "./MainToolsBar/MainToolsBarLayout"
 import ThicknessLayout from "./DropDown/ThicknessLayout"
+import BrushColor from "./PaintToolsBar/BrushColor"
 import Thickness from "./DropDown/Thickness"
 import Button from "./MainToolsBar/Button";
 import { useState, useEffect, useRef } from "react";
@@ -14,6 +15,7 @@ export default function PaintToolsBar({
   iconstyle,
   isShow,
 }) {
+  
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isThicknessOpen, setIsThicknessOpen] = useState(true);
@@ -54,24 +56,22 @@ export default function PaintToolsBar({
 
   const dropDown = [
     {
-      col: "col1",
-      pencilColor: "bg-black",
-      highlighterColor: "bg-yellow-500",
-      style: "border-[3px] border-gray-500 ",
+      col: 0,
+      pencil: "bg-black",
+      highlighter: "bg-yellow-500",
     },
     {
-      col: "col2",
-      pencilColor: "bg-red-500",
-      highlighterColor: "bg-blue-500",
-      style: "border-[3px] border-gray-500 ",
+      col: 1,
+      pencil: "bg-red-500",
+      highlighter: "bg-orange-500",
     },
     {
-      col: "col3",
-      pencilColor: "bg-blue-500",
-      highlighterColor: "bg-green-500",
-      style: "border-[3px] border-gray-500 ",
+      col: 2,
+      pencil: "bg-blue-500",
+      highlighter: "bg-green-500",
     },
   ];
+
   const thickness = [
     {width: "h-[3px]"},
     {width: "h-[5px]"},
@@ -106,20 +106,13 @@ export default function PaintToolsBar({
     };
   }, []);
 
-  const handleColorSelect = (color) => {
-    if (color === "black") {
-      activeTool === "highlighter"
-        ? setHighlightColor("yellow")
-        : setPencilColor(color);
-    } else if (color === "red") {
-      activeTool === "highlighter"
-        ? setHighlightColor("blue")
-        : setPencilColor(color);
-    } else if (color === "blue") {
-      activeTool === "highlighter"
-        ? setHighlightColor("green")
-        : setPencilColor(color);
+  const handleColorSelect = (col) => {
+    if(activeTool === "pencil"){
+      setPencilColor(dropDown[col]["pencil"])
+    }else if(activeTool === "highlighter"){
+      setHighlightColor(dropDown[col]["highlighter"])
     }
+
   }
 
   const handleThicknessSelect = (thickness) => {
@@ -147,54 +140,19 @@ export default function PaintToolsBar({
           {isDropdownOpen && (
             <div>
               <div className={`${dropdowncontainerstyle} mt-2 rounded-t-lg`}>
-                <div
-                  onClick={() => handleColorSelect("black")}
-                  className={`${dropdownstyle}`}
-                >
-                  <div
-                    className={`${colorcirclestyle} ${
-                      activeTool === "pencil" ? "bg-black" : "bg-yellow-500"
-                    } ${
-                      (activeTool === "pencil" && pencilColor === "black") ||
-                      (activeTool === "highlighter" &&
-                        highlightColor === "yellow")
-                        ? "border-[3px] border-gray-500 "
-                        : ""
-                    }`}
-                  />
-                </div>
-                <div
-                  onClick={() => handleColorSelect("red")}
-                  className={`${dropdownstyle}`}
-                >
-                  <div
-                    className={`${colorcirclestyle} ${
-                      activeTool === "pencil" ? "bg-red-500" : "bg-blue-500"
-                    } ${
-                      (activeTool === "pencil" && pencilColor === "red") ||
-                      (activeTool === "highlighter" &&
-                        highlightColor === "blue")
-                        ? "border-[3px] border-gray-500 "
-                        : ""
-                    }`}
-                  />
-                </div>
-                <div
-                  onClick={() => handleColorSelect("blue")}
-                  className={`${dropdownstyle}`}
-                >
-                  <div
-                    className={`${colorcirclestyle} ${
-                      activeTool === "pencil" ? "bg-blue-500" : "bg-green-500"
-                    } ${
-                      (activeTool === "pencil" && pencilColor === "blue") ||
-                      (activeTool === "highlighter" &&
-                        highlightColor === "green")
-                        ? "border-[3px] border-gray-500 "
-                        : ""
-                    }`}
-                  />
-                </div>
+                  {dropDown.map((dropdown) => (
+                    <BrushColor
+                      key={dropdown.col}
+                      handleColorSelect={handleColorSelect} 
+                      colorcirclestyle={colorcirclestyle}
+                      dropdown={dropDown}
+                      col={dropdown.col} 
+                      dropdownstyle={dropdownstyle} 
+                      activeTool={activeTool}
+                      pencilColor={pencilColor}
+                      highlightColor={highlightColor}
+                    />
+                  ))} 
               </div>
 
 
@@ -219,3 +177,5 @@ export default function PaintToolsBar({
     </div>
   );
 }
+
+
