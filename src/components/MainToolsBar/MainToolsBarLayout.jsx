@@ -1,8 +1,5 @@
-export default function MainToolsBarLayout({toolsbarstyle, children }) {
-    return (
-      <div className={`bottom-5 ${toolsbarstyle}`}>
-        <div className="h-full grid max-w-lg grid-cols-4 mx-auto">{children}</div>
-      </div>
-    );
+export default function MainToolsBarLayout({containerstyle, col, children }) {
+  return (
+    <div className={`h-full ${col} ${containerstyle}`}>{children}</div>
+);
   }
-  

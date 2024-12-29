@@ -1,4 +1,6 @@
-import PaintToolsBarLayout from "./PaintToolsBar/PaintToolsBarLayout"
+import MainToolsBarLayout from "./MainToolsBar/MainToolsBarLayout"
+import ThicknessLayout from "./DropDown/ThicknessLayout"
+import Thickness from "./DropDown/Thickness"
 import Button from "./MainToolsBar/Button";
 import { useState, useEffect, useRef } from "react";
 import { FaPencilAlt } from "react-icons/fa";
@@ -6,6 +8,7 @@ import { FaHighlighter } from "react-icons/fa";
 import { PiEraserFill } from "react-icons/pi";
 
 export default function PaintToolsBar({
+  containerstyle,
   toolsbarstyle,
   buttonstyle,
   iconstyle,
@@ -20,9 +23,8 @@ export default function PaintToolsBar({
   const [selectedThickness, setSelectedThickness] = useState("3px");
   const dropdownRef = useRef(null);
 
-  const containerstyle = "grid max-w-lg grid-cols-3 mx-auto";
   const dropdowncontainerstyle =
-    containerstyle + " bg-white divide-gray-100 shadow-lg";
+    containerstyle + " grid-cols-3 bg-white divide-gray-100 shadow-lg";
   const dropdownstyle =
     "flex items-center justify-around h-10 rounded-md cursor-pointer hover:bg-gray-100";
   const colorcirclestyle = "w-5 h-5 rounded-full cursor-pointer shadow-md";
@@ -70,6 +72,11 @@ export default function PaintToolsBar({
       style: "border-[3px] border-gray-500 ",
     },
   ];
+  const thickness = [
+    {width: "3px"},
+    {width: "5px"},
+    {width: "7px"},
+  ]
 
   useEffect(() => {
     setIsToolbarOpen(isShow);
@@ -123,7 +130,7 @@ export default function PaintToolsBar({
     <div ref={dropdownRef}>
       {isToolbarOpen && (
         <div className={`top-5 ${toolsbarstyle}`}>
-            <PaintToolsBarLayout containerstyle={containerstyle}>
+            <MainToolsBarLayout containerstyle={containerstyle} col="grid-cols-3">
                     {paintTools.map((paintTool) => (
                       <Button
                         key={paintTool.tool}
@@ -135,7 +142,7 @@ export default function PaintToolsBar({
                         activeTool={activeTool}
                       />
                     ))}
-                  </PaintToolsBarLayout>
+                  </MainToolsBarLayout>
           
           {isDropdownOpen && (
             <div>
@@ -192,32 +199,18 @@ export default function PaintToolsBar({
 
 
               {isThicknessOpen && (
-                <div className={`${dropdowncontainerstyle} rounded-b-lg`}>
-                  <div
-                    onClick={() => handleThicknessSelect("3px")}
-                    className={`px-4 ${dropdownstyle} ${
-                      selectedThickness === "3px" ? "bg-gray-100" : ""
-                    }`}
-                  >
-                    <div className={`h-[3px] ${thicknessstyle}`} />
-                  </div>
-                  <div
-                    onClick={() => handleThicknessSelect("5px")}
-                    className={`px-4 ${dropdownstyle} ${
-                      selectedThickness === "5px" ? "bg-gray-100" : ""
-                    }`}
-                  >
-                    <div className={`h-[5px] ${thicknessstyle}`} />
-                  </div>
-                  <div
-                    onClick={() => handleThicknessSelect("7px")}
-                    className={`px-4 ${dropdownstyle} ${
-                      selectedThickness === "7px" ? "bg-gray-100" : ""
-                    }`}
-                  >
-                    <div className={`h-[7px] ${thicknessstyle}`} />
-                  </div>
-                </div>
+                <ThicknessLayout dropdowncontainerstyle={dropdowncontainerstyle}>
+                  {thickness.map((thickNess) => (
+                  <Thickness 
+                    key={thickNess.width}
+                    width={thickNess.width}
+                    handleThicknessSelect={handleThicknessSelect}
+                    dropdownstyle={dropdownstyle}
+                    selectedThickness={selectedThickness}
+                    thicknessstyle={thicknessstyle}
+                  />
+                  ))}
+                </ThicknessLayout>
               )}
             </div>
           )}

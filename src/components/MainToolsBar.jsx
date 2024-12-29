@@ -11,6 +11,7 @@ export default function MainToolsBar() {
   const [activeTool, setActiveTool] = useState("cursor");
   const [isShow, setIsShow] = useState(false);
 
+  const containerstyle = "grid max-w-lg h-full mx-auto";
   const toolsbarstyle =
     "fixed z-50 w-42 h-14 -translate-x-1/2 left-1/2 bg-white border border-white rounded-full shadow-xl";
   const buttonstyle =
@@ -53,24 +54,29 @@ export default function MainToolsBar() {
   return (
     <>
       <PaintToolsBar
+        containerstyle={containerstyle}
         toolsbarstyle={toolsbarstyle}
         buttonstyle={buttonstyle}
         iconstyle={iconstyle}
         isShow={isShow}
       />
-      <MainToolsBarLayout toolsbarstyle={toolsbarstyle}>
-        {mainTools.map((mainTool) => (
-          <Button
-            key={mainTool.tool}
-            handleToolClick={handleToolClick}
-            buttonstyle={buttonstyle}
-            tool={mainTool.tool}
-            icon={mainTool.icon}
-            roundedStyle={mainTool.roundedStyle}
-            activeTool={activeTool}
-          />
-        ))}
-      </MainToolsBarLayout>
+
+      <div className={`bottom-5 ${toolsbarstyle}`}>
+        <MainToolsBarLayout containerstyle={containerstyle} col="grid-cols-4">
+            {mainTools.map((mainTool) => (
+              <Button
+                key={mainTool.tool}
+                handleToolClick={handleToolClick}
+                buttonstyle={buttonstyle}
+                tool={mainTool.tool}
+                icon={mainTool.icon}
+                roundedStyle={mainTool.roundedStyle}
+                activeTool={activeTool}
+              />
+          ))}
+        </MainToolsBarLayout>
+      </div>
+      
     </>
   );
 }
