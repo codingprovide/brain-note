@@ -21,6 +21,8 @@ const initialNodes = [
 const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
 
 export default function Flow() {
+  const proOptions = { hideAttribution: true };
+
   //使用screenToFlowPosition來轉換滑鼠點擊的座標
   const { screenToFlowPosition } = useReactFlow();
   //使用useNodesState來管理節點
@@ -82,6 +84,7 @@ export default function Flow() {
       onPaneClick={addNode}
       //停用雙擊畫布進行縮放的功能
       zoomOnDoubleClick={false}
+      proOptions={proOptions}
     >
       <Controls />
       <MiniMap />
