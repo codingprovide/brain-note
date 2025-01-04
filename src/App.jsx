@@ -1,10 +1,7 @@
-import React from 'react';
-import ToolsBar from './ToolsBar';
+import ToolsBar from "./ToolsBar";
 
 const App = () => {
-  return (
-    <ToolsBar/>
-  );
+  return <ToolsBar />;
 };
 
 export default App;
