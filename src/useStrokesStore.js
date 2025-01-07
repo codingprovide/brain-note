@@ -1,5 +1,4 @@
 import { create } from "zustand";
-
 export const useStrokeStore = create((set) => ({
   strokes: [],
   currentPoints: [],

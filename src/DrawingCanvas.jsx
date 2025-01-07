@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { getStroke } from "perfect-freehand";
 import { getSvgPathFromStroke } from "./utils";
 import { useDrawingStore, useStrokeStore } from "./useStrokesStore";
+import { useReactFlow } from "@xyflow/react";
 
 const options = {
   size: 15,
@@ -22,6 +23,7 @@ const options = {
 };
 
 export default function DrawingCanvas() {
+  const { screenToFlowPosition } = useReactFlow();
   const { isDrawing, isEraser } = useDrawingStore((state) => ({
     isDrawing: state.isDrawing,
     isEraser: state.isEraser,
@@ -82,7 +84,7 @@ export default function DrawingCanvas() {
     e.target.releasePointerCapture(e.pointerId);
     if (!isEraser) {
       addStroke({
-        points: currentPoints,
+        points: translatePointToFlowPosition(currentPoints),
         color: strokeColor,
         size: strokeWidth,
       });
@@ -90,6 +92,20 @@ export default function DrawingCanvas() {
       console.log("curr", currentPoints);
     }
     clearCurrentStrokes(); // 清空當前筆劃
+  }
+  function translatePointToFlowPosition(point) {
+    let newStorke = [];
+    point.map((pt) => {
+      const { x, y } = pt;
+      const flowPosition = screenToFlowPosition({ x, y });
+      return newStorke.push({
+        x: flowPosition.x,
+        y: flowPosition.y,
+        pressure: pt.pressure,
+      });
+    });
+    console.log("newStorke", newStorke);
+    return newStorke;
   }
 
   function eraseStrokes(eraserPoint, strokes, setStrokes) {
@@ -123,21 +139,6 @@ export default function DrawingCanvas() {
         }}
         className="absolute top-0"
       >
-        {/* Render existing strokes */}
-        {strokes?.map((stroke, i) => {
-          const pathData = getSvgPathFromStroke(
-            getStroke(stroke.points, { ...options, size: stroke.size })
-          );
-          return (
-            <path
-              key={i}
-              d={pathData}
-              stroke={stroke.color}
-              fill={stroke.color}
-            />
-          );
-        })}
-
         {/* Render the stroke currently being drawn */}
         {currentPoints.length > 0 && (
           <path

@@ -10,6 +10,7 @@ import {
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
+import RenderDrawing from "./RenderDrawing";
 
 const initialNodes = [
   { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
@@ -38,6 +39,7 @@ export default function Flow() {
         <Controls />
         <MiniMap />
         <Background variant="dots" gap={12} size={1} />
+        <RenderDrawing />
       </ReactFlow>
     </div>
   );
