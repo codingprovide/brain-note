@@ -26,3 +26,10 @@ export const useDrawingStore = create((set) => ({
     set((state) => ({ isEraser: !state.isEraser }));
   },
 }));
+
+export const usePositionStore = create((set) => ({
+  position: { x: 0, y: 0 },
+  setPosition: (x, y) => {
+    set({ position: { x, y } });
+  },
+}));

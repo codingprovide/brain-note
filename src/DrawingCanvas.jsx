@@ -1,7 +1,11 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { getStroke } from "perfect-freehand";
 import { getSvgPathFromStroke } from "./utils";
-import { useDrawingStore, useStrokeStore } from "./useStrokesStore";
+import {
+  useDrawingStore,
+  useStrokeStore,
+  usePositionStore,
+} from "./useStrokesStore";
 import { useReactFlow } from "@xyflow/react";
 
 const options = {
@@ -28,6 +32,22 @@ export default function DrawingCanvas() {
     isDrawing: state.isDrawing,
     isEraser: state.isEraser,
   }));
+  const { position, setPosition } = usePositionStore();
+  const svgRef = useRef(null);
+  // if isDrawing is true , then use screenToFlowPosition to convert x,y to position hook
+  // and render the stroke with the position in one svg
+  // so stroke add a positoin property
+
+  useEffect(() => {
+    if (svgRef.current && isDrawing) {
+      const rect = svgRef.current.getBoundingClientRect();
+      let x = rect.left + window.scrollX;
+      let y = rect.top + window.scrollY;
+      let FlowPosition = screenToFlowPosition({ x, y });
+      setPosition(FlowPosition.x, FlowPosition.y);
+      console.log("position", position);
+    }
+  }, [isDrawing]);
 
   const {
     strokes,
@@ -84,29 +104,31 @@ export default function DrawingCanvas() {
     e.target.releasePointerCapture(e.pointerId);
     if (!isEraser) {
       addStroke({
-        points: translatePointToFlowPosition(currentPoints),
-        color: strokeColor,
-        size: strokeWidth,
+        x: position.x,
+        y: position.y,
+        paths: [
+          { points: currentPoints, color: strokeColor, size: strokeWidth },
+        ],
       });
       console.log("strokes", strokes);
       console.log("curr", currentPoints);
     }
     clearCurrentStrokes(); // 清空當前筆劃
   }
-  function translatePointToFlowPosition(point) {
-    let newStorke = [];
-    point.map((pt) => {
-      const { x, y } = pt;
-      const flowPosition = screenToFlowPosition({ x, y });
-      return newStorke.push({
-        x: flowPosition.x,
-        y: flowPosition.y,
-        pressure: pt.pressure,
-      });
-    });
-    console.log("newStorke", newStorke);
-    return newStorke;
-  }
+  // function translatePointToFlowPosition(point) {
+  //   let newStorke = [];
+  //   point.map((pt) => {
+  //     const { x, y } = pt;
+  //     const flowPosition = screenToFlowPosition({ x, y });
+  //     return newStorke.push({
+  //       x: flowPosition.x,
+  //       y: flowPosition.y,
+  //       pressure: pt.pressure,
+  //     });
+  //   });
+  //   console.log("newStorke", newStorke);
+  //   return newStorke;
+  // }
 
   function eraseStrokes(eraserPoint, strokes, setStrokes) {
     const eraserRadius = 15;
@@ -129,6 +151,7 @@ export default function DrawingCanvas() {
   return (
     isDrawing && (
       <svg
+        ref={svgRef}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -136,6 +159,7 @@ export default function DrawingCanvas() {
           touchAction: "none",
           width: "100vw",
           height: "100vh",
+          border: "1px solid red",
         }}
         className="absolute top-0"
       >
