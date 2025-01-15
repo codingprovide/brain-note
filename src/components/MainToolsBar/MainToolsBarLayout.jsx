@@ -1,5 +1,3 @@
-export default function MainToolsBarLayout({containerstyle, col, children }) {
-  return (
-    <div className={`h-full ${col} ${containerstyle}`}>{children}</div>
-);
-  }
+export default function MainToolsBarLayout({ containerstyle, col, children }) {
+  return <div className={`h-full ${col} ${containerstyle}`}>{children}</div>;
+}

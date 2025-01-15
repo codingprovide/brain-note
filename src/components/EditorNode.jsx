@@ -69,7 +69,7 @@ function EditorNode({ isConnectable, selected }) {
         style={{ width, height }}
         className={clsx(
           "border border-gray-300 rounded-sm bg-white p-1 m-0",
-          "hover:border rounded-lg hover:border-gray-500 hover:shadow-lg",
+          "hover:border hover:border-gray-500 hover:shadow-lg",
           "active:border-solid active:border-gray-950",
           "focus-within:border-solid focus-within:border-gray-950 focus-within:shadow-lg"
         )}

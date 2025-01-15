@@ -1,5 +1,5 @@
 import Flow from "./components/Flow";
-import MainToolsBar from "./components/MainToolsBar"
+import MainToolsBar from "./components/MainToolsBar";
 
 export default function App() {
   return (
@@ -7,6 +7,5 @@ export default function App() {
       <Flow />
       <MainToolsBar />
     </div>
-    
-  )
+  );
 }
